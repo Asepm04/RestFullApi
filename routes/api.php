@@ -26,4 +26,8 @@ Route::middleware(App\Http\Middleware\AuthorizeMiddleware::class)->group(functio
     Route::post("/users/get",[App\Http\Controllers\UserController::class,"get"]);
     Route::patch("/users/get",[App\Http\Controllers\UserController::class,"update"]);
     Route::delete("/users/logout",[App\Http\Controllers\UserController::class,"logout"]);
+
+    //contact api
+
+    Route::post("/contact/create",[App\Http\Controllers\ContactController::class,"create"]);
 });
