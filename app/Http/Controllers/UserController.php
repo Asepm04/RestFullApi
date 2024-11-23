@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Models\User;
 use App\Http\Resources\UserRegisterResource;
+use App\Http\Resources\LoginResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -20,7 +24,7 @@ class UserController extends Controller
                 "errors"=>[
                     "message"=>"email is already"
                 ]
-            ]),400);
+            ],400));
         }
 
 
@@ -30,5 +34,33 @@ class UserController extends Controller
 
         $response=  new UserRegisterResource($user);
         return $response->response()->setStatusCode(200);
+    }
+
+    public function login(LoginRequest $request)
+    {
+        $user = $request->validated();
+
+        $email = User::where("email",$user["email"])->first();
+        $password = User::where("password",bcrypt($user["password"]));
+        //untuk debug jika terjadi error pada request
+        // Log::info(json_encode($email));
+        // Log::info(json_encode($password));
+
+
+        if(!$email || !$password)
+        {
+            throw new HttpResponseException(
+                response()->json([
+                    "errors"=>"email or password is wrong"
+                ],400)
+            );
+        }
+
+        $auth = Auth::attempt(["email"=>$user["email"],"password"=>$user["password"]]);
+        if($auth)
+        {
+            $login = new LoginResource($email);
+            return $login->response()->setStatusCode(200);
+        }
     }
 }
