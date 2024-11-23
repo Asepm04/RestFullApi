@@ -148,7 +148,7 @@
                             "schema":{
                                 "type":"object",
                                 "properties":{
-                                    "username":{
+                                    "name":{
                                         "type":"string",
                                         "example":"yadi123"
                                     },

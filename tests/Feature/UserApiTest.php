@@ -16,16 +16,19 @@ class UserApiTest extends TestCase
    public function testRegisterUserSuccess()
    {
     $this->post("/api/users/register",[
-        "name"=>"yadi",
-        "email"=>"yadi@com",
+        "name"=>"yadi2",
+        "email"=>"yadi332@com",
         "password"=>"123456",
-        "remember_token"=>"test"
+        "remember_token"=>"cobain"
     ])->assertStatus(200)
     ->assertJson(
         [
-            "name"=>"yadi",
-            "email"=>"yadi@com",
-            "remember_token"=>"test"
+            "data"=>
+            [
+                "name"=>"yadi2",
+                "email"=>"yadi332@com",
+                "remember_token"=>"cobain"
+            ]
         ]
     );
    }
@@ -127,5 +130,30 @@ class UserApiTest extends TestCase
             "errors"=>"unauthorize"
         ]
             );
+   }
+
+   public function testUpdate()
+   {
+    $this->withHeaders(["authorization"=>"cobain"])
+    ->patch("/api/users/get",[
+        "name"=>"yadi00"
+    ])->assertStatus(200)
+    ->assertJson(
+        [
+            "data"=>
+            [
+                "name"=>"yadi00",
+                "email"=>"yadi332@com"
+            ]
+        ]
+    );
+   }
+
+   public function testLogout()
+   {
+    $this->withHeaders(["authorization"=>"test"])
+    ->delete("/api/users/logout",[])
+    ->assertStatus(200)
+    ->assertJson(["data"=>true]);
    }
 }

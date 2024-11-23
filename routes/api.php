@@ -24,4 +24,6 @@ Route::post("/users/login",[App\Http\Controllers\UserController::class,"login"])
 Route::middleware(App\Http\Middleware\AuthorizeMiddleware::class)->group(function()
 {
     Route::post("/users/get",[App\Http\Controllers\UserController::class,"get"]);
+    Route::patch("/users/get",[App\Http\Controllers\UserController::class,"update"]);
+    Route::delete("/users/logout",[App\Http\Controllers\UserController::class,"logout"]);
 });
