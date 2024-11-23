@@ -104,4 +104,28 @@ class UserApiTest extends TestCase
         
     );
    }
+
+   public function testGetAuth(){
+    $this->withHeaders(['authorization'=>"test"])->post("/api/users/get")
+    ->assertStatus(200)
+    ->assertJson(
+        [
+            "data"=>
+            [
+                "name"=>"yadi",
+                "email"=>"yadi@com"
+            ]
+        ]
+            );
+   }
+
+   public function testGetAuthFailed(){
+    $this->withHeaders(["authorization"=>"get"])->post("/api/users/get")
+    ->assertStatus(400)
+    ->assertJson(
+        [
+            "errors"=>"unauthorize"
+        ]
+            );
+   }
 }

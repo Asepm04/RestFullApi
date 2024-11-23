@@ -63,4 +63,9 @@ class UserController extends Controller
             return $login->response()->setStatusCode(200);
         }
     }
+
+    public function get(Request $request)
+    {
+        return new LoginResource(Auth::user());
+    }
 }
