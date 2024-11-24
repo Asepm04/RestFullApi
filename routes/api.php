@@ -30,4 +30,6 @@ Route::middleware(App\Http\Middleware\AuthorizeMiddleware::class)->group(functio
     //contact api
 
     Route::post("/contact/create",[App\Http\Controllers\ContactController::class,"create"]);
+    Route::get("/contact/get/{id}",[App\Http\Controllers\ContactController::class,"get"])->where("id",'[0-9]+');
+    Route::post("/contact/update/{id}",[App\Http\Controllers\ContactController::class,"update"])->where("id",'[0-9]+');
 });
