@@ -14,8 +14,32 @@ use App\Models\AddressApi;
 
 class AddressController extends Controller
 {
+    private function contact($idcontact)
+    {
+        $user = Auth::user();
+        // Log::info(json_encode($user->id));
+        $contact = ContactApi::where("user_id",$user->id)->where("id",$idcontact)->first();
+        if(!$contact)
+        {
+            throw new HttpResponseException(
+                response()->json(["errors"=>"not found"],404)
+            );
+        }
+    }
+
+    private function address($idcontact,$idaddress)
+    {
+        $address = AddressApi::where("contact_id",$idcontact)->where("id",$idaddress)->first();
+        if(!$address)
+        {
+            throw new HttpResponseException(
+                response()->json(["errors"=>"not found"],404)
+            );
+        }
+    }
     public function createAddress($idcontact,AddressRequest $request)
     {
+
         $data = $request->validated();
         $user = Auth::user();
         Log::info(json_encode($user->id));
@@ -34,22 +58,10 @@ class AddressController extends Controller
 
     public function get($idcontact,$idaddress)
     {
-        $user = Auth::user();
-        // Log::info(json_encode($user->id));
-        $contact = ContactApi::where("user_id",$user->id)->where("id",$idcontact)->first();
-        if(!$contact)
-        {
-            throw new HttpResponseException(
-                response()->json(["errors"=>"not found"],404)
-            );
-        }
+        $this->contact($idcontact);
+        $this->address($idcontact,$idaddress);
         $address = AddressApi::where("contact_id",$idcontact)->where("id",$idaddress)->first();
-        if(!$address)
-        {
-            throw new HttpResponseException(
-                response()->json(["errors"=>"not found"],404)
-            );
-        }
+       
        return  $response = new AddressResource($address);
         Log::info(json_encode($response));
         return $response->response()->setStatusCode(200);
