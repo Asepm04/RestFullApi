@@ -17,9 +17,9 @@ class ContactTest extends TestCase
      */
     public function testCreateContact()
     {
-        $this->withHeaders(["authorization"=>"contact"])
+        $this->withHeaders(["authorization"=>"cobain"])
         ->post("/api/contact/create",[
-            "first_name"=>"mul1",
+            "first_name"=>"mul12",
             "last_name"=>"1yadi",
             "phone"=>"049887427"
         ])->assertStatus(201)
@@ -27,7 +27,7 @@ class ContactTest extends TestCase
             [
                 "data"=>
                 [
-                    "first"=>"mul1",
+                    "first"=>"mul12",
                     "last"=>"1yadi",
                     "phone"=>"049887427"
                 ]
@@ -72,16 +72,16 @@ class ContactTest extends TestCase
         // $this->seed(UserSeeders::class);
         // $this->testCreateContact();
         //karena sudah diinput
-        $contact = ContactApi::where("id","6")->first();
+        $contact = ContactApi::where("id","5")->first();
 
-        $this->withHeaders(["authorization"=>"contact"])
+        $this->withHeaders(["authorization"=>"cobain"])
         ->get("/api/contact/get/".$contact['id'])
         ->assertStatus(200)
         ->assertJson(
             [
                 "data"=>
                 [
-                    "first"=>"mul1",
+                    "first"=>"yadi yadi",
                     "last"=>"1yadi",
                     "phone"=>"049887427"
                 ]
@@ -144,4 +144,25 @@ class ContactTest extends TestCase
             ]
         );
     }
+
+    public function testDeletedContact()
+    {
+        $contact = ContactApi::where("id",4)->first();
+        $this->withHeaders(["authorization"=>"cobain"])
+        ->delete("/api/contact/delete/".$contact['id'],[])
+        ->assertStatus(200)
+        ->assertJson(
+            [
+                "data"=>"true"
+            ]
+        );
+    }
+
+    public function testPaginate()
+    {
+        $this->withHeaders(["authorization"=>"cobain"])
+        ->get("/api/contact/paginate?nama=mul1")
+        ->assertStatus(200);
+    }
+
 }

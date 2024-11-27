@@ -32,4 +32,11 @@ Route::middleware(App\Http\Middleware\AuthorizeMiddleware::class)->group(functio
     Route::post("/contact/create",[App\Http\Controllers\ContactController::class,"create"]);
     Route::get("/contact/get/{id}",[App\Http\Controllers\ContactController::class,"get"])->where("id",'[0-9]+');
     Route::post("/contact/update/{id}",[App\Http\Controllers\ContactController::class,"update"])->where("id",'[0-9]+');
+    Route::delete("/contact/delete/{id}",[App\Http\Controllers\ContactController::class,"delete"])->where("id",'[0-9]+');
+    Route::get("/contact/paginate",[App\Http\Controllers\ContactController::class,"paginate"]);
+
+    //address route
+
+    Route::post("/users/contact/{idContact}/address",[App\Http\Controllers\AddressController::class,"createAddress"])->where("idContact",'[0-9]+');
+    Route::get("/users/contact/{idContact}/address/{idaddress}",[App\Http\Controllers\AddressController::class,"get"])->where(["idContact","idaddress"],'[0-9]+');
 });

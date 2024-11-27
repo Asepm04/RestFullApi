@@ -88,8 +88,10 @@ class UserApiTest extends TestCase
         [
             "data"=>
             [
+                "id"=>"1",
                 "name"=>"yadi",
-                "email"=>"yadi@com"
+                "email"=>"yadi@com",
+                "token"=>"b8a72b7a-ba55-47a4-80a0-60c62a4563cf"
             ]
         ]
     );

@@ -34,6 +34,6 @@ class ContactApi extends Model
 
     public function address():hasMany
     {
-        return $this->hasMany(Address::class,"contact_id","id");
+        return $this->hasMany(AddressApi::class,"contact_id","id");
     }
 }

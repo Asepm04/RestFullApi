@@ -10,8 +10,10 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Models\User;
 use App\Http\Resources\UserRegisterResource;
 use App\Http\Resources\LoginResource;
+use App\Http\Resources\LoginedResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -60,9 +62,11 @@ class UserController extends Controller
         $auth = Auth::attempt(["email"=>$user["email"],"password"=>$user["password"]]);
         if($auth)
         {
-            $login = new LoginResource($email);
-            return $login->response()->setStatusCode(200);
+            $email->remember_token = Str::uuid()->toString();
+            $email->save();
         }
+             $login = new LoginedResource($email);
+            return $login->response()->setStatusCode(200);
     }
 
     public function get(Request $request)
